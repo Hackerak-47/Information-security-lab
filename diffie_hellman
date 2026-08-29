@@ -1,0 +1,30 @@
+import time
+
+p = 23
+g = 5
+
+start = time.perf_counter()
+
+# Private keys
+a = 6
+b = 15
+
+# Public keys
+A = pow(g, a, p)
+B = pow(g, b, p)
+
+# Shared secret
+alice_secret = pow(B, a, p)
+bob_secret = pow(A, b, p)
+
+end = time.perf_counter()
+
+print("Alice public key:", A)
+print("Bob public key:", B)
+
+print("Alice shared secret:", alice_secret)
+print("Bob shared secret:", bob_secret)
+
+print("Same secret:", alice_secret == bob_secret)
+
+print("Time:", end - start)
