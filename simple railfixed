@@ -1,0 +1,18 @@
+def autokey_encrypt(text, key):
+    text = ''.join(ch.lower() for ch in text if ch.isalpha())
+
+    result = ""
+
+    for i in range(len(text)):
+        p = ord(text[i]) - ord('a')
+
+        if i == 0:
+            k = key
+        else:
+            k = ord(text[i-1]) - ord('a')
+
+        c = (p + k) % 26
+
+        result += chr(c + ord('a'))
+
+    return result
