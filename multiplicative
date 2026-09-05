@@ -1,0 +1,33 @@
+def multiplicative_encrypt(text, key):
+    result = ""
+
+    for ch in text.lower():
+        if ch.isalpha():
+            p = ord(ch) - ord('a')
+            c = (p * key) % 26
+            result += chr(c + ord('a'))
+
+    return result
+
+
+def multiplicative_decrypt(cipher, key):
+    result = ""
+
+    inverse = pow(key, -1, 26)
+
+    for ch in cipher.lower():
+        if ch.isalpha():
+            c = ord(ch) - ord('a')
+            p = (c * inverse) % 26
+            result += chr(p + ord('a'))
+
+    return result
+
+
+text = "hello"
+key = 15
+
+cipher = multiplicative_encrypt(text, key)
+print("Cipher:", cipher)
+
+print("Plaintext:", multiplicative_decrypt(cipher, key))
