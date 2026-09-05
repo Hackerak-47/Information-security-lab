@@ -6,7 +6,7 @@ def additive_encrypt(text, key):
             p = ord(ch) - ord('a')
             c = (p + key) % 26
             result += chr(c + ord('a'))
-
+        //if space remain   else result+=ch
     return result
 
 
