@@ -1,0 +1,31 @@
+def additive_encrypt(text, key):
+    result = ""
+
+    for ch in text.lower():
+        if ch.isalpha():
+            p = ord(ch) - ord('a')
+            c = (p + key) % 26
+            result += chr(c + ord('a'))
+
+    return result
+
+
+def additive_decrypt(cipher, key):
+    result = ""
+
+    for ch in cipher.lower():
+        if ch.isalpha():
+            c = ord(ch) - ord('a')
+            p = (c - key) % 26
+            result += chr(p + ord('a'))
+
+    return result
+
+
+text = "I am learning information security"
+key = 20
+
+cipher = additive_encrypt(text, key)
+print("Cipher:", cipher)
+
+print("Plaintext:", additive_decrypt(cipher, key))
