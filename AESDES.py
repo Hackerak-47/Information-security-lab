@@ -31,13 +31,13 @@ def des(text, key):
 def aes(text, key):
 
     start = time.perf_counter()
-
+   # data = text.encode()
     cipher = AES.new(key, AES.MODE_ECB)
 
     ciphertext = cipher.encrypt(
         pad(text, AES.block_size)
     )
-
+   #pad(data,
     t = time.perf_counter() - start
 
     print("AES ciphertext:", ciphertext.hex())
