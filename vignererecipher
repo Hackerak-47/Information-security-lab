@@ -1,35 +1,41 @@
-def affine_encrypt(text, a, b):
+def vigenere_encrypt(text, key):
     result = ""
+    key = key.upper()
+    j = 0
 
-    for ch in text.lower():
+    for ch in text:
         if ch.isalpha():
-            p = ord(ch) - ord('a')
-            c = (a * p + b) % 26
-            result += chr(c + ord('a'))
+            shift = ord(key[j % len(key)]) - ord('A')
+            result += chr((ord(ch.upper()) - ord('A') + shift) % 26 + ord('A'))
+            j += 1
+        else:
+            result += ch
 
     return result
 
 
-def affine_decrypt(cipher, a, b):
+def vigenere_decrypt(cipher, key):
     result = ""
+    key = key.upper()
+    j = 0
 
-    inverse = pow(a, -1, 26)
-
-    for ch in cipher.lower():
+    for ch in cipher:
         if ch.isalpha():
-            c = ord(ch) - ord('a')
-            p = (inverse * (c - b)) % 26
-            result += chr(p + ord('a'))
+            shift = ord(key[j % len(key)]) - ord('A')
+            result += chr((ord(ch.upper()) - ord('A') - shift) % 26 + ord('A'))
+            j += 1
+        else:
+            result += ch
 
     return result
 
 
-text = "hello"
-a = 15
-b = 20
+# User input
+text = input("Enter plaintext: ")
+key = input("Enter key: ")
 
-cipher = affine_encrypt(text, a, b)
-          //for spaces key handle through etters not spaces 
+encrypted = vigenere_encrypt(text, key)
+print("Encrypted text:", encrypted)
 
-print("Cipher:", cipher)
-print("Plaintext:", affine_decrypt(cipher, a, b))
+decrypted = vigenere_decrypt(encrypted, key)
+print("Decrypted text:", decrypted)
