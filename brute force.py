@@ -1,13 +1,10 @@
-text = input("Enter the encrypted text: ")
+text = input("Enter cipher text: ")
 
-for shift in range(26):
-    result = ""
-
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            result += chr((ord(char) - base - shift) % 26 + base)
+for i in range(26):
+    ans = ""
+    for ch in text:
+        if ch.isalpha():
+            ans += chr((ord(ch.lower()) - 97 - i) % 26 + 97)
         else:
-            result += char
-
-    print(f"Shift {shift}: {result}")
+            ans += ch
+    print(i, ans)
