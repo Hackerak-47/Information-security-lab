@@ -1,0 +1,84 @@
+import secrets
+import time
+
+class KeyManagementSystem:
+
+    def __init__(self):
+        self.keys = {}
+
+    def generate_key(self, user):
+        key = secrets.token_hex(16)
+
+        self.keys[user] = {
+            "key": key,
+            "created": time.time(),
+            "revoked": False
+        }
+
+        print("Key generated for", user)
+        print("Key:", key)
+
+    def get_key(self, user):
+        if user not in self.keys:
+            print("User not found.")
+            return
+
+        if self.keys[user]["revoked"]:
+            print("Key has been revoked.")
+            return
+
+        print("Key:", self.keys[user]["key"])
+
+    def rotate_key(self, user):
+        if user not in self.keys:
+            print("User not found.")
+            return
+
+        self.keys[user]["key"] = secrets.token_hex(16)
+        self.keys[user]["created"] = time.time()
+
+        print("Key rotated successfully.")
+        print("New Key:", self.keys[user]["key"])
+
+    def revoke_key(self, user):
+        if user in self.keys:
+            self.keys[user]["revoked"] = True
+            print("Key revoked.")
+        else:
+            print("User not found.")
+
+
+kms = KeyManagementSystem()
+
+while True:
+
+    print("\n===== KEY MANAGEMENT SYSTEM =====")
+    print("1. Generate Key")
+    print("2. Get Key")
+    print("3. Rotate Key")
+    print("4. Revoke Key")
+    print("5. Exit")
+
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        user = input("Enter username: ")
+        kms.generate_key(user)
+
+    elif choice == 2:
+        user = input("Enter username: ")
+        kms.get_key(user)
+
+    elif choice == 3:
+        user = input("Enter username: ")
+        kms.rotate_key(user)
+
+    elif choice == 4:
+        user = input("Enter username: ")
+        kms.revoke_key(user)
+
+    elif choice == 5:
+        break
+
+    else:
+        print("Invalid choice.")
