@@ -61,3 +61,15 @@ cipher2 = AESGCM(aes_key2)
 decrypted = cipher2.decrypt(nonce, ciphertext, None)
 
 print("Decrypted Message:", decrypted.decode())
+from Crypto.PublicKey import ECC
+
+key = ECC.generate(curve='P-256')
+
+private_key = key.export_key()
+public_key = key.public_key().export_key()
+
+print("Private Key:")
+print(private_key)
+
+print("Public Key:")
+print(public_key)
