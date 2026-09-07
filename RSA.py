@@ -32,3 +32,15 @@ for c in cipher:
     plain += chr(m)
 
 print("Decrypted:", plain)
+from Crypto.PublicKey import RSA
+
+key = RSA.generate(2048)
+
+private_key = key.export_key()
+public_key = key.publickey().export_key()
+
+print("Private Key:")
+print(private_key.decode())
+
+print("Public Key:")
+print(public_key.decode())
