@@ -35,3 +35,25 @@ print("Key exchange time:", exchange_time)
 
 if alice_shared == bob_shared:
     print("Shared secret established successfully!")
+from Crypto.Random import random
+
+p = 23
+g = 5
+
+# Alice
+a = random.randint(1, p - 2)
+A = pow(g, a, p)
+
+# Bob
+b = random.randint(1, p - 2)
+B = pow(g, b, p)
+
+# Shared secret
+shared_A = pow(B, a, p)
+shared_B = pow(A, b, p)
+
+print("Alice private:", a)
+print("Alice public:", A)
+print("Bob private:", b)
+print("Bob public:", B)
+print("Shared secret:", shared_A)
