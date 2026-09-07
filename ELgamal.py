@@ -41,3 +41,18 @@ for c1, c2 in ciphertext:
     plaintext += chr(m)
 
 print("Decrypted:", plaintext)
+from Crypto.Random import random
+
+p = 7919
+g = 2
+
+# Private key
+x = random.randint(1, p - 2)
+
+# Public key
+h = pow(g, x, p)
+
+print("Private Key:", x)
+print("Public Key:", (p, g, h))
+
+
