@@ -1,32 +1,76 @@
-plaintext = input("Enter plaintext: ")
-key = input("Enter key: ")
+def encrypt(plaintext, key):
+    plaintext = plaintext.replace(" ", "").upper()
 
-plaintext = plaintext.replace(" ", "").upper()
+    cols = len(key)
+    rows = (len(plaintext) + cols - 1) // cols
 
-cols = len(key)
-rows = (len(plaintext) + cols - 1) // cols
+    # Padding
+    plaintext += "X" * (rows * cols - len(plaintext))
 
-# Padding
-plaintext += "X" * (rows * cols - len(plaintext))
+    # Create matrix row-wise
+    matrix = []
+    index = 0
 
-# Create matrix row-wise
-matrix = []
-index = 0
+    for i in range(rows):
+        row = []
+        for j in range(cols):
+            row.append(plaintext[index])
+            index += 1
+        matrix.append(row)
 
-for i in range(rows):
-    row = []
-    for j in range(cols):
-        row.append(plaintext[index])
-        index += 1
-    matrix.append(row)
+    # Read columns according to key order
+    ciphertext = ""
 
-# Read columns according to key order
-ciphertext = ""
+    for number in sorted(key):
+        col = int(number) - 1
 
-for number in sorted(key):
-    col = int(number) - 1
+        for row in range(rows):
+            ciphertext += matrix[row][col]
+
+    return ciphertext
+
+
+def decrypt(ciphertext, key):
+    ciphertext = ciphertext.replace(" ", "").upper()
+
+    cols = len(key)
+    rows = len(ciphertext) // cols
+
+    # Empty matrix
+    matrix = [[""] * cols for _ in range(rows)]
+
+    index = 0
+
+    # Fill columns according to key order
+    for number in sorted(key):
+        col = int(number) - 1
+
+        for row in range(rows):
+            matrix[row][col] = ciphertext[index]
+            index += 1
+
+    # Read row-wise
+    plaintext = ""
 
     for row in range(rows):
-        ciphertext += matrix[row][col]
+        for col in range(cols):
+            plaintext += matrix[row][col]
 
-print("Ciphertext:", ciphertext)
+    return plaintext
+
+
+# Main
+choice = input("Enter 1 for Encryption or 2 for Decryption: ")
+
+key = input("Enter key: ")
+
+if choice == "1":
+    plaintext = input("Enter plaintext: ")
+    print("Ciphertext:", encrypt(plaintext, key))
+
+elif choice == "2":
+    ciphertext = input("Enter ciphertext: ")
+    print("Plaintext:", decrypt(ciphertext, key))
+
+else:
+    print("Invalid choice")
