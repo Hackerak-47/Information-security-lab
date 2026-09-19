@@ -1,0 +1,67 @@
+import hashlib
+
+
+# Generate Schnorr keys
+def generate_keys():
+    p = 23
+    q = 11
+    g = 2
+
+    x = 3                 # private key
+    y = pow(g, x, p)      # public key
+
+    return p, q, g, x, y
+
+
+# Generate signature
+def sign_message(message, p, q, g, x):
+
+    k = 7                 # random value
+
+    r = pow(g, k, p)
+
+    h = int(
+        hashlib.sha256(
+            (message + str(r)).encode()
+        ).hexdigest(),
+        16
+    ) % q
+
+    s = (k + x * h) % q
+
+    return r, s
+
+
+# Verify signature
+def verify_signature(message, r, s, p, q, g, y):
+
+    h = int(
+        hashlib.sha256(
+            (message + str(r)).encode()
+        ).hexdigest(),
+        16
+    ) % q
+
+    left = pow(g, s, p)
+
+    right = (r * pow(y, h, p)) % p
+
+    if left == right:
+        print("Signature is valid")
+    else:
+        print("Signature is invalid")
+
+
+# Main
+p, q, g, x, y = generate_keys()
+
+print("Public key:", (p, q, g, y))
+print("Private key:", x)
+
+message = input("Enter message: ")
+
+r, s = sign_message(message, p, q, g, x)
+
+print("Signature:", (r, s))
+
+verify_signature(message, r, s, p, q, g, y)
