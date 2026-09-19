@@ -14,3 +14,8 @@ Age: 20
 Diagnosis: Fever
 Doctor: Dr. Sharma
 """)
+
+
+//append
+with open("patient.txt", "a") as file:
+    file.write("Medicine: Paracetamol\n")
