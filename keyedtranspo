@@ -1,0 +1,32 @@
+plaintext = input("Enter plaintext: ")
+key = input("Enter key: ")
+
+plaintext = plaintext.replace(" ", "").upper()
+
+cols = len(key)
+rows = (len(plaintext) + cols - 1) // cols
+
+# Padding
+plaintext += "X" * (rows * cols - len(plaintext))
+
+# Create matrix row-wise
+matrix = []
+index = 0
+
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(plaintext[index])
+        index += 1
+    matrix.append(row)
+
+# Read columns according to key order
+ciphertext = ""
+
+for number in sorted(key):
+    col = int(number) - 1
+
+    for row in range(rows):
+        ciphertext += matrix[row][col]
+
+print("Ciphertext:", ciphertext)
