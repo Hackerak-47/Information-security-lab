@@ -1,28 +1,68 @@
-text = input("Enter plaintext: ")
-text = text.replace(" ", "").upper()
+def encrypt(plaintext, rows=2):
+    plaintext = plaintext.replace(" ", "").upper()
 
-rows = 2
-cols = (len(text) + rows - 1) // rows
+    cols = (len(plaintext) + rows - 1) // rows
 
-# Fill matrix row-wise
-matrix = []
-index = 0
+    # Padding
+    plaintext += "X" * (rows * cols - len(plaintext))
 
-for i in range(rows):
-    row = []
-    for j in range(cols):
-        if index < len(text):
-            row.append(text[index])
-            index += 1
-        else:
-            row.append("X")
-    matrix.append(row)
+    # Create matrix row-wise
+    matrix = []
+    index = 0
 
-# Read column-wise
-cipher = ""
-
-for j in range(cols):
     for i in range(rows):
-        cipher += matrix[i][j]
+        row = []
+        for j in range(cols):
+            row.append(plaintext[index])
+            index += 1
+        matrix.append(row)
 
-print("Ciphertext:", cipher)
+    # Read column-wise
+    ciphertext = ""
+
+    for j in range(cols):
+        for i in range(rows):
+            ciphertext += matrix[i][j]
+
+    return ciphertext
+
+
+def decrypt(ciphertext, rows=2):
+    ciphertext = ciphertext.replace(" ", "").upper()
+
+    cols = len(ciphertext) // rows
+
+    # Create empty matrix
+    matrix = [[""] * cols for _ in range(rows)]
+
+    index = 0
+
+    # Fill column-wise
+    for j in range(cols):
+        for i in range(rows):
+            matrix[i][j] = ciphertext[index]
+            index += 1
+
+    # Read row-wise
+    plaintext = ""
+
+    for i in range(rows):
+        for j in range(cols):
+            plaintext += matrix[i][j]
+
+    return plaintext
+
+
+# Main
+choice = input("Enter 1 for Encryption or 2 for Decryption: ")
+
+if choice == "1":
+    plaintext = input("Enter plaintext: ")
+    print("Ciphertext:", encrypt(plaintext))
+
+elif choice == "2":
+    ciphertext = input("Enter ciphertext: ")
+    print("Plaintext:", decrypt(ciphertext))
+
+else:
+    print("Invalid choice")
