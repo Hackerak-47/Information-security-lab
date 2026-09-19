@@ -1,4 +1,5 @@
 import numpy as np
+from math import gcd
 
 key = np.array([
     [6, 24, 1],
@@ -6,16 +7,52 @@ key = np.array([
     [20, 17, 15]
 ])
 
+
+def mod_inverse(a, m):
+    for x in range(1, m):
+        if (a * x) % m == 1:
+            return x
+    return None
+
+
+def matrix_inverse_mod26(matrix):
+    det = round(np.linalg.det(matrix))
+    det = det % 26
+
+    # Check whether inverse exists
+    if gcd(det, 26) != 1:
+        print("Key matrix has no inverse modulo 26")
+        return None
+
+    det_inv = mod_inverse(det, 26)
+
+    # Calculate adjugate
+    adj = np.zeros((3, 3), dtype=int)
+
+    for i in range(3):
+        for j in range(3):
+
+            minor = np.delete(np.delete(matrix, i, axis=0), j, axis=1)
+
+            minor_det = round(np.linalg.det(minor))
+
+            adj[j][i] = ((-1) ** (i + j)) * minor_det
+
+    inverse_key = (det_inv * adj) % 26
+
+    return inverse_key
+
+
 def encrypt(text):
     text = text.replace(" ", "").upper()
 
-    # Padding
     while len(text) % 3 != 0:
         text += "X"
 
     cipher = ""
 
     for i in range(0, len(text), 3):
+
         block = []
 
         for ch in text[i:i+3]:
@@ -29,21 +66,11 @@ def encrypt(text):
     return cipher
 
 
-def decrypt(cipher):
-    # Find inverse of key modulo 26
-    det = round(np.linalg.det(key))
-    det = det % 26
-
-    det_inv = pow(det, -1, 26)
-
-    # Adjugate
-    adj = np.round(det * np.linalg.inv(key)).astype(int) % 26
-
-    inverse_key = (det_inv * adj) % 26
-
+def decrypt(cipher, inverse_key):
     plaintext = ""
 
     for i in range(0, len(cipher), 3):
+
         block = []
 
         for ch in cipher[i:i+3]:
@@ -59,7 +86,12 @@ def decrypt(cipher):
 
 text = input("Enter plaintext: ")
 
+inverse_key = matrix_inverse_mod26(key)
+
+print("Inverse Matrix:")
+print(inverse_key)
+
 cipher = encrypt(text)
 
 print("Ciphertext:", cipher)
-print("Decrypted text:", decrypt(cipher))
+print("Decrypted text:", decrypt(cipher, inverse_key))
