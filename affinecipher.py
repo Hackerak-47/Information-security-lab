@@ -1,3 +1,14 @@
+import math
+
+a = int(input("Enter a: "))
+b = int(input("Enter b: "))
+
+if math.gcd(a, 26) != 1:
+    print("Invalid a! Modular inverse does not exist.")
+else:
+    a_inv = pow(a, -1, 26)
+
+    print("Modular inverse:", a_inv)
 def affine_encrypt(text, a, b):
     result = ""
 
