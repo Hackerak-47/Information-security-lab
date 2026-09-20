@@ -19,3 +19,10 @@ Doctor: Dr. Sharma
 //append
 with open("patient.txt", "a") as file:
     file.write("Medicine: Paracetamol\n")
+
+//enc wirting
+import base64
+file.write(
+        base64.b64encode(k).decode()
+    )
+
