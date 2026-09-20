@@ -2,6 +2,7 @@ from Crypto.Cipher import DES
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 import time
+import base64
 //after enc to display
 text = base64.b64encode(text).decode()
 
