@@ -22,12 +22,3 @@ def multiplicative_decrypt(cipher, key):
             result += chr(p + ord('a'))
 
     return result
-
-
-text = "hello"
-key = 15
-
-cipher = multiplicative_encrypt(text, key)
-print("Cipher:", cipher)
-
-print("Plaintext:", multiplicative_decrypt(cipher, key))
