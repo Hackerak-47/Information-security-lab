@@ -22,13 +22,3 @@ def affine_decrypt(cipher, a, b):
             result += chr(p + ord('a'))
 
     return result
-
-
-text = "hello"
-a = 15
-b = 20
-
-cipher = affine_encrypt(text, a, b)
-
-print("Cipher:", cipher)
-print("Plaintext:", affine_decrypt(cipher, a, b))
