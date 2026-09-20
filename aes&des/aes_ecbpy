@@ -1,0 +1,37 @@
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+
+def aes_enc(text):
+    key = get_random_bytes(16)
+
+    cipher = AES.new(key, AES.MODE_ECB)
+
+    encrypted = cipher.encrypt(
+        pad(text, AES.block_size)
+    )
+
+    return encrypted, key
+
+
+def aes_dec(encrypted, key):
+
+    cipher = AES.new(key, AES.MODE_ECB)
+
+    decrypted = unpad(
+        cipher.decrypt(encrypted),
+        AES.block_size
+    )
+
+    return decrypted
+
+
+message = input("Enter message: ")
+
+encrypted, key = aes_enc(message.encode())
+
+print("Encrypted:", encrypted)
+
+decrypted = aes_dec(encrypted, key)
+
+print("Decrypted:", decrypted.decode())
